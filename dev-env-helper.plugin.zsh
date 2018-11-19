@@ -33,7 +33,7 @@ de() {
         elif [ $cmd = "ex" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker exec $container ${@:${x}} )
         elif [ $cmd = "unittest" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec $container make unittest )
         elif [ $cmd = "manage" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec $container python3 manage.py ${@:${x}} )
-        elif [ $cmd = "alembic" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec $container bash -c 'cd /src && export SQL_USE_ALEMBIC_USER=yes && export SQL_PASSWORD=superroot && python3 manage.py db '"${@:x}"'' )
+        elif [ $cmd = "alembic" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec $container bash -c 'cd /src && export SQL_USE_ALEMBIC_USER=yes && export SQL_PASSWORD=superroot && python3 manage.py db '"${@:${x}}"'' )
         else echo "Command for 'de' not found"; fi
     else
         echo "Not in dev env app dir."
