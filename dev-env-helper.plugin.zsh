@@ -5,7 +5,16 @@ dev-env-prepare-docker-files() {
 }
 
 de() {
-    if [ -e "./../../.dev-env-context" ]; then
+    if [ -e "./.dev-env-context" ]
+    then
+        local cmd=$1
+
+        # Commands
+        if [ $cmd = "up" ]; then source run.sh up
+        elif [ $cmd = "reload" ]; then source run.sh reload
+        elif [ $cmd = "halt" ]; then source run.sh halt
+        fi
+    elif [ -e "./../../.dev-env-context" ]; then
         local cmd=$1
         local x=2
         if [ ! -z $CONTAINER ]; then # if $CONTAINER env var not empty
@@ -29,7 +38,7 @@ de() {
         elif [ $cmd = "restart" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose restart $container )
         elif [ $cmd = "rebuild" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose up --build -d $container )
         elif [ $cmd = "run" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose run --rm $container );
-        elif [ $cmd = "bashin" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec -it $container bash )
+        elif [ $cmd = "bashin" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec $container bash )
         elif [ $cmd = "ex" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker exec $container ${@:${x}} )
         elif [ $cmd = "unittest" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec $container make unittest )
         elif [ $cmd = "manage" ]; then ( cd ../.. && dev-env-prepare-docker-files && docker-compose exec $container python3 manage.py ${@:${x}} )
