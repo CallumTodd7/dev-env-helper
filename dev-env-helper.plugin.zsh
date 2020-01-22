@@ -12,8 +12,9 @@ de() {
         # Commands
         if [ $cmd = "up" ]; then source run.sh up
         elif [ $cmd = "reload" ]; then source run.sh reload
-        elif [ $cmd = "halt" ]; then source run.sh halt 
+        elif [ $cmd = "halt" ] || [ $cmd = "down" ]; then source run.sh halt 
         elif [ $cmd = "repair" ]; then source run.sh repair 
+        elif [ $cmd = "git" ] || [ $cmd = "g" ]; then bash ./scripts/git_list.sh
         fi
     elif [ -e "./../../.dev-env-context" ]; then
         local cmd=$1
