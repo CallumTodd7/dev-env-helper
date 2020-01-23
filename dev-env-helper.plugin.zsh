@@ -1,3 +1,19 @@
+git-pull-all-apps() {
+    GREEN="\033[32m"
+    NORMAL="\033[0;39m"
+    echo "Running git pull on all apps"
+    for item in ./apps/*; do
+        if [ -d $item ] && [ -d "${item}/.git" ]; then
+            (
+                cd $item
+                repo=$(basename `git rev-parse --show-toplevel`)
+                echo -e "${GREEN} ${repo} ${NORMAL}"
+                git pull
+            );
+        fi
+    done
+}
+
 dev-env-prepare-docker-files() {
     export COMPOSE_PROJECT_NAME=dv
     dockerfilelist=$(<./.docker-compose-file-list)
@@ -15,6 +31,7 @@ de() {
         elif [ $cmd = "halt" ] || [ $cmd = "down" ]; then source run.sh halt 
         elif [ $cmd = "repair" ]; then source run.sh repair 
         elif [ $cmd = "git" ] || [ $cmd = "g" ]; then bash ./scripts/git_list.sh
+        elif [ $cmd = "gl" ]; then git-pull-all-apps
         fi
     elif [ -e "./../../.dev-env-context" ]; then
         local cmd=$1
